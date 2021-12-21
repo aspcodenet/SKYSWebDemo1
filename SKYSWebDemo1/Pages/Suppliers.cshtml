@@ -15,13 +15,13 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var player in Model.Suppliers)
+    @foreach (var supplier in Model.Suppliers)
     {
         <tr>
-            <td>@player.Name</td>  
-            <td>@player.Country</td>  
+            <td>@supplier.Name</td>  
+            <td>@supplier.Country</td>  
             <td>
-                <a href="" class="btn btn-secondary">Se info</a>
+                <a asp-page="/ShowSupplier" asp-route-id="@supplier.Id" class="btn btn-secondary">Se info</a>
             </td>
         </tr>
     }
