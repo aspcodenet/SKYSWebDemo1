@@ -4,10 +4,46 @@
     ViewData["Title"] = "Home page";
 }
 
+@{
+    var message = "Good morning";
+    if (DateTime.Now.Hour > 17)
+    {
+        message = "Good night";
+    }
+}
 
-<h1>Hejsan</h1>
+<h3>@message</h3>
+
+<h2>@Model.GreetingMessage</h2>
+
+<h1>Hejsan du är @(Model.Age) </h1>
+
+Om ett år är du @(Model.Age+1)
+
+Annat ex @(Model.Age)+1
+
+<hr/>
+@if (Model.Age >= 18)
+{
+    <h3>Du är myndig</h3>
+}
+else
+{
+    <h3>Du är INTE myndig</h3>
+}
+
+<hr/>
+<ul>
+@foreach(var s in Model.Namn)
+{
+    <li>@s - består av @(s.Length) tecken</li>
+}
+</ul>
+
+
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
