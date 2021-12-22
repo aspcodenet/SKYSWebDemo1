@@ -13,28 +13,29 @@ namespace SKYSWebDemo1.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly NorthwindContext _context;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public class CategoryViewModel
         {
-            _logger = logger;
+            public int Id { get; set; }
+            public string Name { get; set; }
         }
 
-        public int Age { get; set; }
+        public List<CategoryViewModel> Categories { get; set; }
 
-        public string GreetingMessage { get; set; }
-
-        public List<string> Namn { get; set; } = new List<string>();
+        public IndexModel(ILogger<IndexModel> logger, NorthwindContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
 
         public void OnGet()
         {
-
-            if (DateTime.Now.Hour > 17)
-                GreetingMessage = "Good night";
-            else
-                GreetingMessage = "Good morning";
-            Age = 12;
-            Namn.Add("Stefan");
-            Namn.Add("Oliver");
+            Categories = _context.Categories.Select(r => new CategoryViewModel
+            {
+                Id = r.CategoryId,
+                Name = r.CategoryName
+            }).ToList();
         }
     }
 }
