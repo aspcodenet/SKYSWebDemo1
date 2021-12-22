@@ -1,26 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SKYSWebDemo1.Models;
 
 namespace SKYSWebDemo1.Pages
 {
-    public class IndexModel : PageModel
+    public class CategoryModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
         private readonly NorthwindContext _context;
-
-        public class CategoryViewModel
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-        }
 
         public class ProductViewModel
         {
@@ -29,29 +18,20 @@ namespace SKYSWebDemo1.Pages
             public string CategoryName { get; set; }
             public decimal Unitprice { get; set; }
         }
-
         public List<ProductViewModel> Products { get; set; }
 
-        public List<CategoryViewModel> Categories { get; set; }
-
-        public IndexModel(ILogger<IndexModel> logger, NorthwindContext context)
+        public CategoryModel(NorthwindContext context)
         {
-            _logger = logger;
             _context = context;
         }
 
-        public void OnGet()
+        public void OnGet(int id)
         {
-            Categories = _context.Categories.Select(r => new CategoryViewModel
-            {
-                Id = r.CategoryId,
-                Name = r.CategoryName
-            }).ToList();
-
+            CategoryName = _context.Categories.First(r => r.CategoryId == id).CategoryName;
             Products = _context.Products
-                .Include(e=>e.Category)
+                .Include(e => e.Category)
                 .OrderByDescending(t => t.ProductId)
-                .Take(5)
+                .Where(r=>r.Category.CategoryId == id)
                 .Select(r => new ProductViewModel
                 {
                     Id = r.ProductId,
@@ -60,6 +40,9 @@ namespace SKYSWebDemo1.Pages
                     Unitprice = r.UnitPrice.Value
                 }).ToList();
 
+
         }
+
+        public string CategoryName { get; set; }
     }
 }
